@@ -131,7 +131,7 @@ public class Bocce implements Gioco {
    */
   public void preparaBoccino(double intensita, double angoloDirezione) {
     bocce[indiceBoccino].impostaVelPolare(intensita, angoloDirezione);
-    Ntiri--;
+    Ntiri--; // Decremento numero di tiri ogni volta che c'è un tiro del boccino
   }
 
   /*
