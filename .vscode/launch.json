@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch VisualizzaGioco",
+            "request": "launch",
+            "mainClass": "VisualizzaGioco",
+            "projectName": "Prog2Bocce_28706f9a"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}",

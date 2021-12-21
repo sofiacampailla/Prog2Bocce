@@ -1,22 +1,24 @@
+//classe che descrive un campo, dimensioni e buche
 public class Campo {
-    // dichiaro campi della classe
+    // dichiaro campi della classe, cioè un array di buche e le dimensioni del campo
     private Buca buche[];
     private double XMax = 0, YMax = 0;
 
-    // costruttore per instanziare un nuovo campo
+    // costruttore per istanziare un nuovo campo
     public Campo(double diamBuche[], double XMax, double YMax) {
         // Controllo che le buche siano massimo 4
         if (diamBuche.length == 0 || diamBuche.length > 4) {
             throw new IllegalArgumentException("Numero di diametri non valido");
         }
-        // Controllo che dimensioni non siano negative
+        // Controllo che le dimensioni non siano negative
         if(XMax <= 0 || YMax <= 0) {
-            throw new IllegalArgumentException("Dimensioni campo non valido");
+            throw new IllegalArgumentException("Dimensioni campo non valide");
         }
         this.XMax = XMax;
         this.YMax = YMax;
+        //nuovo array di buche lungo quanto numero di diametri passati
         buche = new Buca[diamBuche.length];
-        // inizializziamo gli arrays
+        // inizializziamo l'array
         // inizializziamo la posizione delle buche
         for (int i = 0; i < buche.length; i++) {
             double posX, posY;
@@ -41,17 +43,18 @@ public class Campo {
                     posX = 0;
                     posY = 0;
             }
+            //decisa la posizione di questa buca, la costruisco
             buche[i] = new Buca(diamBuche[i], posX, posY);
         }
     }
 
     // Ritorna il numero di buche che serve in Bocce
     public int numeroBuche() {
-        return this.buche.length;
+        return buche.length;
     }
-
+    // Ritorna la buca i e le dimensioni del campo
     public Buca getBuca(int index) {
-        return new Buca(buche[index]);
+        return buche[index];
     }
 
     public double getXMax() {
