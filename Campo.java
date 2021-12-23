@@ -16,9 +16,8 @@ public class Campo {
         }
         this.XMax = XMax;
         this.YMax = YMax;
-        //nuovo array di buche lungo quanto numero di diametri passati
+        //nuovo array di buche lungo quanto il numero di diametri passati
         buche = new Buca[diamBuche.length];
-        // inizializziamo l'array
         // inizializziamo la posizione delle buche
         for (int i = 0; i < buche.length; i++) {
             double posX, posY;

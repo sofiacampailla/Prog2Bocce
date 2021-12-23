@@ -2,6 +2,8 @@ import java.util.*;
 import java.lang.Math;
 import java.io.*;
 
+//La classe Bocce implementa l'interfaccia Gioco,
+//cioè una classe che contiene tutti metodi astratti, cioè non implementati, cioè senza {}
 public class Bocce implements Gioco {
   public Campo campo;
   public Boccia bocce[];
@@ -29,7 +31,7 @@ public class Bocce implements Gioco {
     if (!(sc.next()).equals("GIOCO")) {
       throw new IllegalArgumentException("Linea GIOCO non presente");
     }
-    double campoLenX = sc.nextDouble();
+    double campoLenX = sc.nextDouble(); //va alla lettura del pezzo successivo e si aspetta un double
     double campoLenY = sc.nextDouble();
     // BUCHE
     if (!(sc.next()).equals("BUCHE")) {
@@ -85,7 +87,7 @@ public class Bocce implements Gioco {
     }
     sc.close();
 
-    // Definisci l'indice del boccino
+    // Definisce l'indice del boccino, supponendo come boccino la prima boccia
     indiceBoccino = 0;
     for (int i = 1; i < bocce.length; i++) {
       if (bocce[i].getDiametro() < bocce[indiceBoccino].getDiametro()) {
