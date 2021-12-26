@@ -5,5 +5,5 @@ Successivamente si sono create le due classi Buca e Boccia che estendono la clas
 
 Inoltre si crea la classe Campo, che descrive appunto il campo, le sue dimensioni e le posizioni delle sue buche. 
 
-La classe Bocce invece, implementa l'interfaccia Gioco, contiene tutti metodi astratti. Legge il file, individua il boccino, il numero di buche e bocce, imprime le velocità agli oggetti in moto, aggiorna lo stato degli oggetti ad ogni scatto di simulazione, stabilisce il numero di tiri e il punteggio del giocatore, insieme a tutti gli altri metodi che necessitano implementazione da VisualizzaGioco. 
+La classe Bocce invece, implementa l'interfaccia Gioco (che contiene tutti metodi astratti per definizione). Legge il file, individua il boccino, il numero di buche e bocce, imprime le velocità agli oggetti in moto, aggiorna lo stato degli oggetti ad ogni scatto di simulazione, stabilisce il numero di tiri e il punteggio del giocatore, insieme a tutti gli altri metodi che necessitano implementazione da VisualizzaGioco. 
 
