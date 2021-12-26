@@ -43,10 +43,10 @@ public class Boccia extends Cerchio {
 
 	//override del metodo di cerchio checkEntrata per aggiornare la caduta
 	//versione modificata di un metodo già implementato nella classe madre Cerchio
-	public boolean checkEntrata(Cerchio c) { //passo un cerchio della classe madre
-		if (!caduta) {       //se la boccia non è caduta nella buca
-			caduta = c.checkEntrata(this); //controllo se la boccia è caduta nella buca 
-			//chiamata al metodo della classe madre. Aggiorno la caduta. c sta per buca, this per boccia
+	public boolean checkEntrata(Buca b) { //passo una buca della classe figlia
+		if (!caduta) {       //se la boccia non è già caduta
+			caduta = b.checkEntrata(this); //controllo se la boccia è caduta nella buca 
+			//chiamata al metodo della classe madre. Aggiorno la caduta. b sta per buca, this per boccia
 		}
 		return caduta;
 	}
