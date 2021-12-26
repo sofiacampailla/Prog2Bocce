@@ -2,8 +2,7 @@ import java.util.*;
 import java.lang.Math;
 import java.io.*;
 
-//La classe Bocce implementa l'interfaccia Gioco,
-//cioè una classe che contiene tutti metodi astratti, cioè non implementati, cioè senza {}
+//classe che implementa l'interfaccia Gioco
 public class Bocce implements Gioco {
   public Campo campo;
   public Boccia bocce[];
@@ -24,16 +23,17 @@ public class Bocce implements Gioco {
    * minima. Lancia eccezione se per qualche motivo non riesce a leggere dal file.
    */
   public void inizializzaLeggendo(String nome) throws Exception {
-    // Leggiamo tutto quello che riguarda il campo: dimensioni e diametro buche
-    // Supposizione che il file abbia sempre lo stesso ordine
+    //supposizione che il file abbia sempre lo stesso ordine
     Scanner sc = new Scanner(new File(nome));
-    // GIOCO
+
+    //GIOCO
     if (!(sc.next()).equals("GIOCO")) {
       throw new IllegalArgumentException("Linea GIOCO non presente");
     }
-    double campoLenX = sc.nextDouble(); //va alla lettura del pezzo successivo e si aspetta un double
+    double campoLenX = sc.nextDouble();
     double campoLenY = sc.nextDouble();
-    // BUCHE
+
+    //BUCHE
     if (!(sc.next()).equals("BUCHE")) {
       throw new IllegalArgumentException("Linea BUCHE non presente");
     }
@@ -41,14 +41,14 @@ public class Bocce implements Gioco {
     if (nBuche <= 0) {
       throw new IllegalArgumentException("Numero di buche non valido");
     }
-    //istanzio array per memorizzare i diametri delle buche
     double dimBuche[] = new double[nBuche];
     for (int i = 0; i < nBuche; i++) {
       dimBuche[i] = sc.nextDouble();
     }
-    // Creiamo il campo chiamando il costruttore di Campo
+    //Creazione del campo
     campo = new Campo(dimBuche, campoLenX, campoLenY);
-    // BOCCE
+
+    //BOCCE
     if (!(sc.next()).equals("BOCCE")) {
       throw new IllegalArgumentException("Linea BOCCE non presente");
     }
@@ -56,49 +56,37 @@ public class Bocce implements Gioco {
     if (nBocce <= 0) {
       throw new IllegalArgumentException("Numero di bocce non valido");
     }
-    //istanzio array lungo n bocce
+    //array lungo n bocce
     bocce = new Boccia[nBocce];
-    // Per ogni nuova boccia
     for (int i = 0; i < nBocce; i++) {
-      // Leggiamo il suo diametro
       double diamBoccia = sc.nextDouble();
-      // Dobbiamo assegnare randomicamente una posizione
+      //assegnazione randomica di una posizione
       boolean posizioneNonValida = true;
-      //finchè la posizione della boccia non è valida
+
       while (posizioneNonValida) {
-        // Generazione di una nuova posizione, moltiplicando numero random tra 0 e 1 per range valido
-        //per posizione campo
         double bocciaPosX = Math.random() * (campoLenX - diamBoccia) + diamBoccia / 2;
         double bocciaPosY = Math.random() * (campoLenY - diamBoccia) + diamBoccia / 2;
-        // Creiamo boccia con questa posizione, chiamando il costruttore di boccia, in una variabile locale
+        //creazione boccia
         Boccia boccia = new Boccia(diamBoccia, bocciaPosX, bocciaPosY);
-        // Assumo che la posizione sia corretta
         posizioneNonValida = false;
-        // Confronto se non interseca buche
         for (int k = 0; k < campo.numeroBuche(); k++) {
-          if (boccia.checkSovrapposizione(campo.getBuca(k))) { //boccia temporanea confrontata con tutte le buche k
+          if (boccia.checkSovrapposizione(campo.getBuca(k))) {
             posizioneNonValida = true;
           }
         }
-        // Confronto con le altre bocce
         for (int k = 0; k < i; k++) {
-          if (boccia.checkSovrapposizione(bocce[k])) { //boccia temp (boccia) di indice i 
-            //è confrontata con bocce già piazzate precedentemente (k)
+          if (boccia.checkSovrapposizione(bocce[k])) {
             posizioneNonValida = true;
           }
         }
-        //salviamo comunque la boccia anche se non valida, in caso ricomincia il while
         bocce[i] = boccia;
       }
     }
     sc.close();
 
-    // Definisce l'indice del boccino, supponendo come boccino la prima boccia
+    //definisce l'indice del boccino, supponendo come boccino la prima boccia
     indiceBoccino = 0;
-    //cerco diametro più piccolo
     for (int i = 1; i < bocce.length; i++) {
-      //se il diametro della boccia i-esima è < di quello che attualmente
-      //crediamo boccino, aggiorno indice boccino con i
       if (bocce[i].getDiametro() < bocce[indiceBoccino].getDiametro()) {
         indiceBoccino = i;
       }
@@ -122,7 +110,7 @@ public class Bocce implements Gioco {
   public int numeroCadute() {
     int numCadute = 0;
     for (int i = 0; i < bocce.length; i++) {
-      if (bocce[i].isCaduta()) { //ritorna valore del booleano
+      if (bocce[i].isCaduta()) { 
         numCadute++;
       }
     }
@@ -140,10 +128,10 @@ public class Bocce implements Gioco {
    * @param angoloDirezione angolo formato dal vettore velocita' misurato in
    * radianti partendo dalla direzione positiva dell'asse x.
    */
-  //chiamata ogni volta che si lancia il boccino, imprime velocità e angolo ad esso
+  //imprime velocità e angolo al boccino
   public void preparaBoccino(double intensita, double angoloDirezione) {
     bocce[indiceBoccino].impostaVelPolare(intensita, angoloDirezione);
-    Ntiri--; // Decremento numero di tiri ogni volta che c'è un tiro del boccino
+    Ntiri--;
   }
 
   /*
@@ -156,37 +144,31 @@ public class Bocce implements Gioco {
    * vero se, dopo, una boccia e' ancora in moto. Ritorna falso se, dopo, tutte le
    * bocce sono ferme.
    */
-  //metodo che si occupa della simulazione fisica del gioco, chiama equazioni del moto
-  //aggiornando lo stato degli oggetti (velocità, caduta, posizione)
+  //metodo che aggiorna lo stato degli oggetti (velocità, caduta, posizione)
   public boolean evoluzioneDeltaT() {
-    for (Boccia boccia : bocce) { // Equivalente a for(int i = 0; i < bocce.length; i++) { bocce[i].evoluz... }
+    for (Boccia boccia : bocce) {
       if(boccia.isCaduta()) {
-        continue; //se la boccia è gia caduta, ovvero se si verifica la condizione,
-        // non faccio altri calcoli, la ignoro, continua senza eeguire istruzioni rimanenti del for
-        //altrimenti controllo se la boccia non è caduta e faccio tutto il resto
+        continue;
       }
-      //metodo che aggiorna la posizione della boccia in funzione del delta T
+      //metodo che aggiorna la posizione della boccia in funzione del DELTA_T
       boccia.evoluzionePosizione(DELTA_T);
-      // Controlliamo se una boccia è caduta nella buca
       for (int i = 0; i < campo.numeroBuche(); i++) {
-        if (boccia.checkEntrata(campo.getBuca(i))) { //per ogni buca, se la boccia è entrata nella buca i del campo, 
-          return true; // scatto di simulazione termina se una boccia è caduta
-        } //checkEntrata aggiorna anche lo stato di caduta della boccia
+        if (boccia.checkEntrata(campo.getBuca(i))) {
+          return true; 
+        }
       }
-      // Aggiorno velocità se la boccia urta una sponda
+      //aggiorna velocità se la boccia urta una sponda
       if (boccia.urtoCampo(campo)) {
-        return true; // Con urto campo scatto di simulazione si ferma
+        return true;
       }
-      // Urto tra due bocce
-      for (Boccia altraBoccia : bocce) { //come for(j=0;j<bocce.length;j++) {!bocce[i].isFerma && bocce[i]!=bocce[j] && ...}
+      //urto tra due bocce
+      for (Boccia altraBoccia : bocce) {
         if (!boccia.isFerma() && boccia != altraBoccia && !altraBoccia.isCaduta()) {
-          //se diverse a livello di puntatore in memoria e non ferma
           if (boccia.urtoBoccia(altraBoccia)) {
             return true;
           }
         }
       }
-      // Diminuisce velocità della boccia, arrivo qua solo se la boccia non ha urtato e non è caduta
       boccia.diminuzioneVel(DECREMENTO);
     }
     return !bocceFerme();
@@ -316,7 +298,7 @@ public class Bocce implements Gioco {
    * Ritorna vero se e solo se tutte le bocce ancora presenti in campo sono ferme.
    */
   public boolean bocceFerme() {
-    for (Boccia boccia : bocce) { //come for(i=0;i<bocce.length;i++) {if(!boccia[i].isFerma &&...)}
+    for (Boccia boccia : bocce) {
       if (!boccia.isFerma() && !boccia.isCaduta()) {
         return false;
       }
@@ -338,7 +320,7 @@ public class Bocce implements Gioco {
    */
   public int punti() {
     int numCadute = 0;
-    for (int i = 0; i < bocce.length; i++) { //come for(Boccia b:bocce) {if(b!=bocce[indiceBoccino] && b.isCaduta()...)}
+    for (int i = 0; i < bocce.length; i++) {
       if (i != indiceBoccino && bocce[i].isCaduta()) {
         numCadute++;
       }
