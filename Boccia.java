@@ -10,6 +10,9 @@ public class Boccia extends Cerchio {
 	// concretizza il concetto astratto
 	public Boccia(double diam, double posX, double posY) {
 		super(diam, posX, posY);
+		if(diam<5 || diam>20){
+			throw new IllegalArgumentException("Dimensione diametro boccia non valida");
+		}
 		velX = 0;
 		velY = 0;
 		caduta = false;

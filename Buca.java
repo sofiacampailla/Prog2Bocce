@@ -5,5 +5,8 @@ public class Buca extends Cerchio {
 	//super poichè riprende i parametri del costruttore di Cerchio
 	public Buca(double diam, double posX, double posY) {
 		super(diam, posX, posY);
+		if(diam>25){
+			throw new IllegalArgumentException("Dimensione diametro buca non valida");
+		}
 	}
 }
