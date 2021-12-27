@@ -10,8 +10,8 @@ public class Campo {
         if (diamBuche.length == 0 || diamBuche.length > 4) {
             throw new IllegalArgumentException("Numero di diametri non valido");
         }
-        //controllo dimensioni campo
-        if(XMax <= 0 || YMax <= 0) {
+        // Controllo che le dimensioni siano regolari
+        if(XMax <= 150 || XMax > 250 || YMax <= 150 || YMax > 250) {
             throw new IllegalArgumentException("Dimensioni campo non valide");
         }
         this.XMax = XMax;

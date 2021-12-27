@@ -7,6 +7,9 @@ public class Boccia extends Cerchio {
 	//costruttore
 	public Boccia(double diam, double posX, double posY) {
 		super(diam, posX, posY);
+		if(diam<5 || diam>20){
+			throw new IllegalArgumentException("Dimensione diametro boccia non valida");
+		}
 		velX = 0;
 		velY = 0;
 		caduta = false;
@@ -35,9 +38,9 @@ public class Boccia extends Cerchio {
 	}
 
 	//override del metodo di cerchio checkEntrata per aggiornare la caduta
-	public boolean checkEntrata(Cerchio c) {
-		if (!caduta) {  
-			caduta = c.checkEntrata(this); 
+	public boolean checkEntrata(Buca b) { 
+		if (!caduta) {       
+			caduta = b.checkEntrata(this); 
 		}
 		return caduta;
 	}

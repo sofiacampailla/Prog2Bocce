@@ -28,17 +28,17 @@ public class Bocce implements Gioco {
 
     //GIOCO
     if (!(sc.next()).equals("GIOCO")) {
-      throw new IllegalArgumentException("Linea GIOCO non presente");
+      throw new IllegalArgumentException("Parola GIOCO non presente");
     }
     double campoLenX = sc.nextDouble();
     double campoLenY = sc.nextDouble();
 
     //BUCHE
     if (!(sc.next()).equals("BUCHE")) {
-      throw new IllegalArgumentException("Linea BUCHE non presente");
+      throw new IllegalArgumentException("Parola BUCHE non presente");
     }
     int nBuche = sc.nextInt();
-    if (nBuche <= 0) {
+    if (nBuche <= 0 || nBuche>4) {
       throw new IllegalArgumentException("Numero di buche non valido");
     }
     double dimBuche[] = new double[nBuche];
@@ -50,10 +50,10 @@ public class Bocce implements Gioco {
 
     //BOCCE
     if (!(sc.next()).equals("BOCCE")) {
-      throw new IllegalArgumentException("Linea BOCCE non presente");
+      throw new IllegalArgumentException("Parola BOCCE non presente");
     }
     int nBocce = sc.nextInt();
-    if (nBocce <= 0) {
+    if (nBocce <= 0 || nBocce>12) {
       throw new IllegalArgumentException("Numero di bocce non valido");
     }
     //array lungo n bocce
@@ -84,11 +84,21 @@ public class Bocce implements Gioco {
     }
     sc.close();
 
-    //definisce l'indice del boccino, supponendo come boccino la prima boccia
+    // Definisce l'indice del boccino, supponendo come boccino la prima boccia e cerca boccia più grande per averla comunque più piccola di tutte le buche
     indiceBoccino = 0;
+    int indiceBocciaGrande=0;
+    //cerco diametro più piccolo e più grande
     for (int i = 1; i < bocce.length; i++) {
       if (bocce[i].getDiametro() < bocce[indiceBoccino].getDiametro()) {
         indiceBoccino = i;
+      }
+      if (bocce[i].getDiametro() > bocce[indiceBocciaGrande].getDiametro()) {
+        indiceBocciaGrande = i;
+      }
+    }
+    for (int i = 0; i < nBuche; i++) {
+      if (dimBuche[i]<bocce[indiceBocciaGrande].getDiametro()){
+        throw new IllegalArgumentException("Dimensioni della buca "+(i+1)+" non valide");
       }
     }
   }
@@ -147,7 +157,7 @@ public class Bocce implements Gioco {
   //metodo che aggiorna lo stato degli oggetti (velocità, caduta, posizione)
   public boolean evoluzioneDeltaT() {
     for (Boccia boccia : bocce) {
-      if(boccia.isCaduta()) {
+      if(boccia.isCaduta() || boccia.isFerma()) {
         continue;
       }
       //metodo che aggiorna la posizione della boccia in funzione del DELTA_T
